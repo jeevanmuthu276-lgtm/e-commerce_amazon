@@ -1,7 +1,8 @@
 "use client";
-
+import Link from "next/link";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
+
 import {
   FaMapMarkerAlt,
   FaShoppingCart,
@@ -83,36 +84,36 @@ export default function Navbar() {
             </div>
           )}
         </div>
+     <div className="relative ml-2">
+ <div
+  onClick={() => {
+    setShowAccount(!showAccount);
+    setShowLanguage(false);
+  }}
+  className="px-2 py-1 border border-transparent hover:border-white cursor-pointer"
+>
+  <Link href="/login">
+    <p className="text-xs">
+      Hello, Sign in
+    </p>
+  </Link>
 
-        {/* Account */}
-        <div className="relative ml-2">
-          <div
-            onClick={() => {
-              setShowAccount(!showAccount);
-              setShowLanguage(false);
-            }}
-            className="px-2 py-1 border border-transparent hover:border-white cursor-pointer"
-          >
-            <p className="text-xs">
-              Hello, Sign in
-            </p>
-
-            <div className="flex items-center gap-1">
-              <span className="font-bold">
-                Account & Lists
-              </span>
-
-              <FaChevronDown size={10} />
-            </div>
-          </div>
+  <div className="flex items-center gap-1">
+    <span className="font-bold">
+      Account & Lists
+    </span>
+    <FaChevronDown size={10} />
+  </div>
+</div>
 
           {showAccount && (
             <div className="absolute top-full right-0 mt-1 w-[350px] bg-white text-black rounded shadow-lg">
               <div className="p-4">
 
-                <button className="w-full bg-yellow-400 py-2 rounded font-bold">
-                  Sign In
-                </button>
+              <Link href="/login"
+                    className="block w-full bg-yellow-400 py-2 rounded font-bold text-center" >
+                    Sign In
+                 </Link>
 
                 <hr className="my-3" />
 
@@ -162,14 +163,13 @@ export default function Navbar() {
         </div>
 
         {/* Cart */}
-        <div className="ml-2 flex items-center gap-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer">
-          <FaShoppingCart size={28} />
-
-          <span className="font-bold">
-            Cart
-          </span>
-        </div>
-
+<Link
+  href="/cart"
+  className="ml-2 flex items-center gap-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer"
+>
+  <FaShoppingCart size={28} />
+  <span className="font-bold">Cart</span>
+</Link>
       </div>
     </header>
   );

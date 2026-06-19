@@ -1,4 +1,8 @@
-export default function MenuBar() {
+interface MenuBarProps {
+  onMenuToggle: () => void;
+}
+
+export default function MenuBar({ onMenuToggle }: MenuBarProps) {
   const menuItems = [
     "MX Player",
     "Sell",
@@ -16,9 +20,12 @@ export default function MenuBar() {
 
   return (
     <div className="bg-[#232f3e] text-white h-12 flex items-center px-4">
-      
-      {/* All Menu */}
-      <div className="px-2 py-1 border border-transparent hover:border-white cursor-pointer">
+
+      {/* All Menu — onClick added here */}
+      <div
+        onClick={onMenuToggle}
+        className="px-2 py-1 border border-transparent hover:border-white cursor-pointer flex items-center gap-1 font-bold whitespace-nowrap"
+      >
         ☰ All
       </div>
 
@@ -27,13 +34,7 @@ export default function MenuBar() {
         {menuItems.map((item) => (
           <div
             key={item}
-            className="
-              px-2 py-1
-              border border-transparent
-              hover:border-white
-              cursor-pointer
-              transition-all
-            "
+            className="px-2 py-1 border border-transparent hover:border-white cursor-pointer transition-all whitespace-nowrap"
           >
             {item}
           </div>

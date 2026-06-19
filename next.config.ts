@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     "http://192.168.1.36:3000"
   ],
   images: {
-    domains: [
-      "m.media-amazon.com",
-      "images.unsplash.com",
-      "picsum.photos",
-      "via.placeholder.com"
+    remotePatterns: [
+      { protocol: "https", hostname: "m.media-amazon.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "placehold.co" },
     ],
   },
 };
