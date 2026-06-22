@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
+import { useCartStore } from "@/lib/cartStore";
+import { useUserStore } from "@/lib/userStore";
 
 import {
   FaMapMarkerAlt,
@@ -12,6 +14,18 @@ import {
 export default function Navbar() {
   const [showLanguage, setShowLanguage] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
+  
+  // To avoid hydration mismatch with Zustand persist, we only render the cart count after mount
+  const [mounted, setMounted] = useState(false);
+  const cartItems = useCartStore((state) => state.items);
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="bg-[#131921] text-white relative z-50">
@@ -19,13 +33,15 @@ export default function Navbar() {
 
         {/* Logo */}
         <div className="px-2 py-1 border border-transparent hover:border-white cursor-pointer">
-          <h1 className="text-3xl font-bold">
-            amazon.in
-          </h1>
+          <Link href="/">
+            <h1 className="text-3xl font-bold">
+              amazon.in
+            </h1>
+          </Link>
         </div>
 
         {/* Location */}
-        <div className="ml-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer">
+        <div className="ml-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer hidden md:block">
           <p className="text-xs text-gray-300">
              Delivering to Madurai 625018
           </p>
@@ -42,7 +58,7 @@ export default function Navbar() {
         <SearchBar />
 
         {/* Language */}
-        <div className="relative ml-2">
+        <div className="relative ml-2 hidden sm:block">
           <div
             onClick={() => {
               setShowLanguage(!showLanguage);
@@ -84,7 +100,7 @@ export default function Navbar() {
             </div>
           )}
         </div>
-     <div className="relative ml-2">
+     <div className="relative ml-2 hidden sm:block">
  <div
   onClick={() => {
     setShowAccount(!showAccount);
@@ -92,9 +108,9 @@ export default function Navbar() {
   }}
   className="px-2 py-1 border border-transparent hover:border-white cursor-pointer"
 >
-  <Link href="/login">
+  <Link href={mounted && user ? "#" : "/login"}>
     <p className="text-xs">
-      Hello, Sign in
+      Hello, {mounted && user ? user.name : "Sign in"}
     </p>
   </Link>
 
@@ -110,10 +126,22 @@ export default function Navbar() {
             <div className="absolute top-full right-0 mt-1 w-[350px] bg-white text-black rounded shadow-lg">
               <div className="p-4">
 
-              <Link href="/login"
-                    className="block w-full bg-yellow-400 py-2 rounded font-bold text-center" >
-                    Sign In
-                 </Link>
+              {mounted && user ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    setShowAccount(false);
+                  }}
+                  className="block w-full bg-yellow-400 py-2 rounded font-bold text-center"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link href="/login"
+                  className="block w-full bg-yellow-400 py-2 rounded font-bold text-center" >
+                  Sign In
+                </Link>
+              )}
 
                 <hr className="my-3" />
 
@@ -138,7 +166,11 @@ export default function Navbar() {
 
                     <ul className="space-y-1">
                       <li>Your Account</li>
-                      <li>Your Orders</li>
+                      <li>
+                        <Link href="/orders" className="hover:text-yellow-500 hover:underline">
+                          Your Orders
+                        </Link>
+                      </li>
                       <li>Your Wish List</li>
                       <li>Prime Membership</li>
                     </ul>
@@ -152,24 +184,33 @@ export default function Navbar() {
         </div>
 
         {/* Orders */}
-        <div className="ml-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer">
-          <p className="text-xs">
-            Returns
-          </p>
+        <Link href="/orders">
+          <div className="ml-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer hidden sm:block">
+            <p className="text-xs">
+              Returns
+            </p>
 
-          <p className="font-bold">
-            & Orders
-          </p>
-        </div>
+            <p className="font-bold">
+              & Orders
+            </p>
+          </div>
+        </Link>
 
         {/* Cart */}
-<Link
-  href="/cart"
-  className="ml-2 flex items-center gap-2 px-2 py-1 border border-transparent hover:border-white cursor-pointer"
->
-  <FaShoppingCart size={28} />
-  <span className="font-bold">Cart</span>
-</Link>
+        <Link
+          href="/cart"
+          className="ml-2 flex items-center gap-1 px-2 py-1 border border-transparent hover:border-white cursor-pointer relative"
+        >
+          <div className="relative">
+            <FaShoppingCart size={28} />
+            {mounted && cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-2 bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full z-10">
+                {cartItemCount}
+              </span>
+            )}
+          </div>
+          <span className="font-bold hidden sm:inline">Cart</span>
+        </Link>
       </div>
     </header>
   );

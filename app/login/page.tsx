@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/lib/userStore";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setUser = useUserStore((state) => state.setUser);
 
 const router = useRouter();
 
@@ -26,6 +28,7 @@ const router = useRouter();
   const data = await res.json();
 
   if (data.success) {
+    setUser(data.user);
     alert("Login Successful");
 
     // Redirect to Home Page

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import SaveRecentlyViewed from "@/components/SaveRecentlyViewed";
 
 export default function SaveRecentlyViewed({
   productId,
