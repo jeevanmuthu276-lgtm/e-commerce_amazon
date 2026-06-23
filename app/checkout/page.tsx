@@ -2,13 +2,11 @@
 import { useCartStore } from "@/lib/cartStore";
 import { useUserStore } from "@/lib/userStore";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function CheckoutPage() {
-  const cartItems = useCartStore((state) => state.items);
-  const clearCart = useCartStore((state) => state.clearCart);
-  const user = useUserStore((state) => state.user);
+  const { items: cartItems, clearCart, updateQuantity, removeFromCart } = useCartStore();
+  const { user } = useUserStore();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -65,7 +63,6 @@ export default function CheckoutPage() {
         </div>
         <div className="text-2xl text-gray-800 font-medium">Checkout</div>
         <div>
-          {/* Lock icon placeholder */}
           <span className="text-gray-500">🔒</span>
         </div>
       </header>
@@ -81,7 +78,7 @@ export default function CheckoutPage() {
           </div>
         ) : (
           <div className="flex flex-col md:flex-row gap-8">
-            
+
             {/* Left Column */}
             <div className="flex-1 space-y-6">
               {/* Step 1 */}
@@ -115,16 +112,46 @@ export default function CheckoutPage() {
                 <div className="flex-1 text-sm border border-gray-300 rounded p-4">
                   <p className="font-bold text-[#007600] mb-1">Guaranteed delivery: 24 June</p>
                   <p className="text-xs text-gray-500 mb-3">Items dispatched by Amazon</p>
-                  
+
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex gap-4 mb-4">
                       <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
-                         <img src={item.image} alt={item.name} className="max-w-full max-h-full object-contain" />
+                        <img src={item.image} alt={item.name} className="max-w-full max-h-full object-contain" />
                       </div>
                       <div>
                         <p className="font-bold">{item.name}</p>
                         <p className="text-[#B12704] font-bold">₹{item.price.toFixed(2)}</p>
-                        <p className="text-xs">Quantity: {item.quantity}</p>
+                        <div className="flex items-center gap-3 mt-1 text-sm">
+                          <div className="flex items-center border border-gray-300 rounded shadow-sm bg-white overflow-hidden">
+                            <button
+                              onClick={() => {
+                                if (item.quantity > 1) {
+                                  updateQuantity(item.id, item.quantity - 1);
+                                }
+                              }}
+                              className={`px-3 py-1 font-bold transition-colors ${item.quantity <= 1 ? 'bg-gray-100 text-gray-300 cursor-not-allowed' : 'bg-[#f0f2f2] hover:bg-[#e3e6e6] text-gray-700'}`}
+                              disabled={item.quantity <= 1}
+                            >
+                              -
+                            </button>
+                            <span className="px-4 py-1 text-gray-900 font-medium">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="px-3 py-1 bg-[#f0f2f2] hover:bg-[#e3e6e6] text-gray-700 font-bold transition-colors"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className="text-gray-300">|</span>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-[#007185] hover:text-[#C45500] hover:underline"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -135,7 +162,7 @@ export default function CheckoutPage() {
             {/* Right Column: Order Summary */}
             <div className="w-full md:w-[300px]">
               <div className="border border-gray-300 rounded p-4 bg-gray-50 sticky top-4">
-                <button 
+                <button
                   onClick={handlePlaceOrder}
                   disabled={isPlacingOrder}
                   className="w-full bg-[#FFD814] hover:bg-[#F7CA00] border border-[#FCD200] rounded-lg py-2.5 text-sm mb-4 shadow-sm font-normal transition-colors disabled:opacity-50"
@@ -143,7 +170,9 @@ export default function CheckoutPage() {
                   {isPlacingOrder ? "Placing Order..." : "Place Your Order"}
                 </button>
                 <div className="text-xs text-center text-gray-500 mb-4 px-2">
-                  By placing your order, you agree to Amazon's <a href="#" className="text-blue-600 hover:underline">privacy notice</a> and <a href="#" className="text-blue-600 hover:underline">conditions of use</a>.
+                  By placing your order, you agree to Amazon's{" "}
+                  <a href="#" className="text-blue-600 hover:underline">privacy notice</a> and{" "}
+                  <a href="#" className="text-blue-600 hover:underline">conditions of use</a>.
                 </div>
 
                 <h3 className="font-bold text-lg mb-2 border-b border-gray-300 pb-2">Order Summary</h3>

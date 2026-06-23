@@ -6,7 +6,7 @@ import { useUserStore } from "@/lib/userStore";
 
 export default function CategoryGrid() {
   const [sections, setSections] = useState<any[]>([]);
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state: any) => state.user);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -60,14 +60,14 @@ export default function CategoryGrid() {
 
                 {section.items?.length === 1 || section.type === 'single' ? (
                   <div>
-                    <Link href={(section.items[0]?.link && section.items[0]?.link !== '#' && !section.items[0]?.link.includes('/products')) ? section.items[0]?.link : '/product/1'}>
+                    <Link href={(section.items[0]?.link && section.items[0]?.link !== '#' && !section.items[0]?.link.includes('/product')) ? section.items[0]?.link : `/category/${section.items[0]?.name || section.title}`}>
                       <img
                         src={section.items[0]?.image}
                         alt={section.items[0]?.name}
                         className="w-full h-[260px] object-cover mb-2 cursor-pointer"
                       />
                     </Link>
-                    <Link href={(section.items[0]?.link && section.items[0]?.link !== '#' && !section.items[0]?.link.includes('/products')) ? section.items[0]?.link : '/product/1'} className="hover:text-[#c45500] hover:underline">
+                    <Link href={(section.items[0]?.link && section.items[0]?.link !== '#' && !section.items[0]?.link.includes('/product')) ? section.items[0]?.link : `/category/${section.items[0]?.name || section.title}`} className="hover:text-[#c45500] hover:underline">
                       <p className="text-[12px] text-gray-800 mt-2 line-clamp-2 leading-tight">
                         {section.items[0]?.name}
                       </p>
@@ -77,14 +77,14 @@ export default function CategoryGrid() {
                   <div className="grid grid-cols-2 gap-x-4 gap-y-4">
                     {section.items?.slice(0, 4).map((item: any, i: number) => (
                       <div key={i} className="flex flex-col">
-                        <Link href={(item.link && item.link !== '#' && !item.link.includes('/products')) ? item.link : '/product/1'}>
+                        <Link href={(item.link && item.link !== '#' && !item.link.includes('/product')) ? item.link : `/category/${item.name}`}>
                           <img
                             src={item.image}
                             alt={item.name}
                             className="w-full h-[115px] object-cover cursor-pointer"
                           />
                         </Link>
-                        <Link href={(item.link && item.link !== '#' && !item.link.includes('/products')) ? item.link : '/product/1'} className="hover:text-[#c45500] hover:underline">
+                        <Link href={(item.link && item.link !== '#' && !item.link.includes('/product')) ? item.link : `/category/${item.name}`} className="hover:text-[#c45500] hover:underline">
                           <p className="text-[12px] text-gray-800 mt-2 line-clamp-2 leading-tight">
                             {item.name}
                           </p>
@@ -96,7 +96,7 @@ export default function CategoryGrid() {
               </div>
 
               <Link
-                href={(section.link && section.link !== '#' && !section.link.includes('/products')) ? section.link : '/product/1'}
+                href={(section.link && section.link !== '#' && !section.link.includes('/product')) ? section.link : `/category/${section.title}`}
                 className="text-[#007185] hover:text-[#c45500] hover:underline text-[13px] font-medium mt-5 inline-block"
               >
                 {section.type === 'single' ? 'See more' : 'Explore all'}

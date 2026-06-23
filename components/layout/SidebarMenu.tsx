@@ -10,9 +10,8 @@ interface SidebarMenuProps {
 }
 
 export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
-  const user = useUserStore((state) => state.user);
+  const { user } = useUserStore();
 
-  // Prevent background scrolling when sidebar is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -28,17 +27,13 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex">
-      {/* Dark overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/70 transition-opacity"
         onClick={onClose}
       ></div>
 
-      {/* Sidebar Panel */}
       <div className="relative flex flex-col w-[365px] max-w-[80%] bg-white h-full shadow-xl animate-slide-in-left">
-        
-        {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-3 -right-14 text-white p-1 border border-white rounded-md hover:bg-white/10 transition-colors"
         >
@@ -47,7 +42,6 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           </svg>
         </button>
 
-        {/* Header */}
         <div className="bg-[#232f3e] text-white px-8 py-3 flex items-center gap-3">
           <div className="bg-white rounded-full p-1 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#232f3e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,9 +51,7 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
           <h2 className="text-[19px] font-bold">Hello, {user ? user.name : "Sign in"}</h2>
         </div>
 
-        {/* Content Sections */}
         <div className="flex-1 overflow-y-auto pb-20">
-          {/* Trending */}
           <div className="py-2 border-b border-gray-300">
             <h3 className="px-8 py-2 text-[18px] font-bold text-gray-900 mt-2">Trending</h3>
             <ul className="text-[14px] text-gray-600">
@@ -69,100 +61,44 @@ export default function SidebarMenu({ isOpen, onClose }: SidebarMenuProps) {
             </ul>
           </div>
 
-          {/* Digital Content and Devices */}
           <div className="py-2 border-b border-gray-300">
             <h3 className="px-8 py-2 text-[18px] font-bold text-gray-900 mt-2">Digital Content and Devices</h3>
             <ul className="text-[14px] text-gray-600">
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Amazon miniTV - FREE entertainment
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Echo & Alexa
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Fire TV
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Kindle E-Readers & eBooks
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Audible Audiobooks
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Amazon Prime Video
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Amazon Prime Music
-                <span className="text-gray-400">›</span>
-              </li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Amazon miniTV - FREE entertainment</li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Echo & Alexa <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Fire TV <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Kindle E-Readers & eBooks <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Audible Audiobooks <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Amazon Prime Video <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Amazon Prime Music <span className="text-gray-400">›</span></li>
             </ul>
           </div>
 
-          {/* Shop by Category */}
           <div className="py-2 border-b border-gray-300">
             <h3 className="px-8 py-2 text-[18px] font-bold text-gray-900 mt-2">Shop by Category</h3>
             <ul className="text-[14px] text-gray-600">
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Mobiles, Computers
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                TV, Appliances, Electronics
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Men's Fashion
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Women's Fashion
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                See all
-                <span className="text-gray-400">∨</span>
-              </li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Mobiles, Computers <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">TV, Appliances, Electronics <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Men's Fashion <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Women's Fashion <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">See all <span className="text-gray-400">∨</span></li>
             </ul>
           </div>
 
-          {/* Programs & Features */}
           <div className="py-2">
             <h3 className="px-8 py-2 text-[18px] font-bold text-gray-900 mt-2">Programs & Features</h3>
             <ul className="text-[14px] text-gray-600">
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Gift Cards & Mobile Recharges
-                <span className="text-gray-400">›</span>
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Flight Tickets
-              </li>
-              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">
-                Clearance store
-              </li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Gift Cards & Mobile Recharges <span className="text-gray-400">›</span></li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Flight Tickets</li>
+              <li className="px-8 py-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center transition-colors">Clearance store</li>
             </ul>
           </div>
-
         </div>
       </div>
-      
-      {/* Custom styles for the slide-in animation */}
+
       <style dangerouslySetInnerHTML={{__html: `
-        @keyframes slideInLeft {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-        .animate-slide-in-left {
-          animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
+        @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        .animate-slide-in-left { animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
       `}} />
     </div>
   );

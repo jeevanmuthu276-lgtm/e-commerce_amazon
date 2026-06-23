@@ -65,6 +65,7 @@ export default function RegisterPage() {
           onChange={(e) =>
             setForm({ ...form, name: e.target.value })
           }
+          autoComplete="off"
           required
         />
 
@@ -76,6 +77,7 @@ export default function RegisterPage() {
           onChange={(e) =>
             setForm({ ...form, email: e.target.value })
           }
+          autoComplete="off"
           required
         />
 
@@ -87,6 +89,7 @@ export default function RegisterPage() {
           onChange={(e) =>
             setForm({ ...form, password: e.target.value })
           }
+          autoComplete="new-password"
           required
         />
 

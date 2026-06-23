@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function OrdersPage() {
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state: any) => state.user);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [orders, setOrders] = useState<any[]>([]);
@@ -17,16 +17,16 @@ export default function OrdersPage() {
   }, []);
 
   useEffect(() => {
-    if (mounted && !user) {
+    if (mounted && !user?.user) {
       router.push("/login");
-    } else if (mounted && user) {
+    } else if (mounted && user?.user) {
       fetchOrders();
     }
   }, [mounted, user, router]);
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`/api/orders?userId=${user?.id}`);
+      const res = await fetch(`/api/orders?userId=${user?.user?.id}`);
       const data = await res.json();
       if (data.success) {
         setOrders(data.orders);
@@ -38,7 +38,7 @@ export default function OrdersPage() {
     }
   };
 
-  if (!mounted || !user) return null;
+  if (!mounted || !user?.user) return null;
 
   return (
     <div className="bg-white min-h-screen">
